@@ -78,16 +78,12 @@
     <script>
       var map = L.map('map').setView([32.92, -116.95], 10);
       
+      L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+              maxZoom: 18,
+              minZoom: 1,
+              attribution: '(c) <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors (c) <a href="http://cartodb.com/attributions">CartoDB</a>, CartoDB <a href ="http://cartodb.com/attributions">attributions</a>'
+          }).addTo(map);
       
-      
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-          maxZoom: 18,
-          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-            'Imagery  <a href="http://mapbox.com">Mapbox</a>',
-          id: 'mapbox.streets',
-          accessToken: 'pk.eyJ1IjoiZGFuaWVsc2NsIiwiYSI6IjRhNE5CcncifQ.lV0g4Lo5tbKiJstUlYB1aA'
-      }).addTo(map);
       
       var marker = L.marker([32.9, -117.2]).addTo(map);
       
