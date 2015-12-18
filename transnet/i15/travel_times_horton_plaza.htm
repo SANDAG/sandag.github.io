@@ -38,7 +38,7 @@
     <div id="map"></div>
     <div id="stats">
       <h2>Travel Time Difference without I-15 Managed Lanes</h2>
-      Destination Zone = Sorrento Valley Employment Center
+      Destination Zone = Horton Plaza
       <table>
         <tr>
           <td style='text-align: center;'><img src='../../media/marker-icon.png'></td>
@@ -85,7 +85,7 @@
           }).addTo(map);
       
       
-      var marker = L.marker([32.9, -117.2]).addTo(map);
+      var marker = L.marker([32.714, -117.1635]).addTo(map);
       
       var jurisLayer = L.geoJson(null, {
           style: function(feature) {
@@ -95,11 +95,11 @@
       
       var jurisLayer = omnivore.topojson('http://sandag.github.io/geo/jurisdictions.topo.json', null, jurisLayer).addTo(map);
       
-      $.getJSON("http://sandag.github.io/transnet/i15/travel_time_sorrento_valley.json", function (data) {
+      $.getJSON("http://sandag.github.io/transnet/i15/travel_time_horton_plaza.json", function (data) {
         var link = L.geoJson(data, {
           style: function(feature) {
             var fillclr;
-            var diffTime = feature.properties.diff_time_da_toll;
+            var diffTime = feature.properties.diff_time_da_free;
             if (diffTime > 10.0) fillclr = "#730000";
             else if (diffTime > 5.0) fillclr = "#FC8B00";
             else if (diffTime > 2.5) fillclr = "#F5F500";
@@ -108,7 +108,7 @@
             return {fillColor: fillclr, color: '#ddd', weight: 1, fillOpacity: .6};
           },
           filter: function (feature, layer) {
-            return feature.properties.diff_time_da_toll> 1 || feature.properties.diff_time_da_toll < -1;
+            return feature.properties.diff_time_da_free> 1 || feature.properties.diff_time_da_free < -1;
           },
         }).addTo(map);
       });
