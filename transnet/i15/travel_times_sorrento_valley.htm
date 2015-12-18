@@ -38,7 +38,7 @@
     <div id="map"></div>
     <div id="stats">
       <h2>Travel Time Difference without I-15 Managed Lanes</h2>
-      Destination Zone = Sorrento Valley Employment Center
+      Destination Zone = Sorrento Valley
       <table>
         <tr>
           <td style='text-align: center;'><img src='../../media/marker-icon.png'></td>
@@ -46,7 +46,7 @@
         </tr>
         <tr>
           <td style='width: 25%;'><div style='width: 100%; height: 2px; background: #000' /></td>
-          <td>SR 52 Extension</td>
+          <td>I-15 Managed Lanes</td>
         </tr>
         <tr>
           <td style='background: #00FF00; width: 25%;'></td>
@@ -95,8 +95,7 @@
       
       var jurisLayer = omnivore.topojson('http://sandag.github.io/geo/jurisdictions.topo.json', null, jurisLayer).addTo(map);
       
-      $.getJSON("http://sandag.github.io/transnet/i15/travel_time_sorrento_valley.json", function (data) {
-        var link = L.geoJson(data, {
+       var travelLayer = L.geoJson(null, {
           style: function(feature) {
             var fillclr;
             var diffTime = feature.properties.diff_time_da_toll;
@@ -108,12 +107,15 @@
             return {fillColor: fillclr, color: '#ddd', weight: 1, fillOpacity: .6};
           },
           filter: function (feature, layer) {
-            return feature.properties.diff_time_da_toll> 1 || feature.properties.diff_time_da_toll < -1;
+            return feature.properties.diff_time_da_toll > 1 || feature.properties.diff_time_da_toll < -1;
           },
-        }).addTo(map);
+          onEachFeature: function (feature, layer) {
+            layer.bindPopup('<table><tr><td>Travel Time Difference: </td><td>' + feature.properties.diff_time_da_toll.toFixed(1) + ' min</td></tr><tr><td>Percent Travel Time Difference: </td><td>' + (feature.properties.diff_pct_time_da_toll * 100).toFixed(1) + '%</td></tr></table>');
+          }
       });
       
-
+      var travelLayer = omnivore.topojson('http://sandag.github.io/transnet/i15/travel_time_sorrento_valley.topo.json', null, travelLayer).addTo(map);
+      
       
       $.getJSON("http://sandag.github.io/transnet/i15/i15_links.json", function(data) {
           var link = L.geoJson(data, {
