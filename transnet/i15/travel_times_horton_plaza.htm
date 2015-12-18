@@ -95,11 +95,10 @@
       
       var jurisLayer = omnivore.topojson('http://sandag.github.io/geo/jurisdictions.topo.json', null, jurisLayer).addTo(map);
       
-      $.getJSON("http://sandag.github.io/transnet/i15/travel_time_horton_plaza.json", function (data) {
-        var link = L.geoJson(data, {
+       var travelLayer = L.geoJson(null, {
           style: function(feature) {
             var fillclr;
-            var diffTime = feature.properties.diff_time_da_free;
+            var diffTime = feature.properties.diff_time_da_toll;
             if (diffTime > 10.0) fillclr = "#730000";
             else if (diffTime > 5.0) fillclr = "#FC8B00";
             else if (diffTime > 2.5) fillclr = "#F5F500";
@@ -108,12 +107,15 @@
             return {fillColor: fillclr, color: '#ddd', weight: 1, fillOpacity: .6};
           },
           filter: function (feature, layer) {
-            return feature.properties.diff_time_da_free> 1 || feature.properties.diff_time_da_free < -1;
+            return feature.properties.diff_time_da_toll > 1 || feature.properties.diff_time_da_toll < -1;
           },
-        }).addTo(map);
+          onEachFeature: function (feature, layer) {
+            layer.bindPopup('<table><tr><td>Travel Time Difference: </td><td>' + feature.properties.diff_time_da_toll.toFixed(1) + ' min</td></tr><tr><td>Percent Travel Time Difference: </td><td>' + (feature.properties.diff_pct_time_da_toll * 100).toFixed(1) + '%</td></tr></table>');
+          }
       });
       
-
+      var travelLayer = omnivore.topojson('http://sandag.github.io/transnet/i15/travel_time_horton_plaza.json', null, travelLayer).addTo(map);
+      
       
       $.getJSON("http://sandag.github.io/transnet/i15/i15_links.json", function(data) {
           var link = L.geoJson(data, {
