@@ -90,7 +90,7 @@
       var travelLayer = L.geoJson(null, {
           style: function(feature) {
             var fillclr;
-            var diffTime = feature.properties.chg_tour_t;
+            var diffTime = feature.properties.alt_avg_tour_time - feature.properties.base_avg_tour_time;
             if (diffTime > 5.0) fillclr = "#730000";
             else if (diffTime > 2.5) fillclr = "#FC8B00";
             else if (diffTime > 1.0) fillclr = "#F5F500";
@@ -98,14 +98,14 @@
             return {fillColor: fillclr, color: '#ddd', weight: 1, fillOpacity: .6};
           },
           filter: function (feature, layer) {
-            return feature.properties.chg_tour_t > 1 || feature.properties.chg_tour_t < -1;
+            return feature.properties.alt_avg_tour_time - feature.properties.base_avg_tour_time > 1 || feature.properties.alt_avg_tour_time - feature.properties.base_avg_tour_time < -1;
           },
           onEachFeature: function (feature, layer) {
-            layer.bindPopup('<table><tr><td>Mandatory Travel Time Difference: </td><td>' + feature.properties.chg_tour_t.toFixed(1) + ' min</td></tr><tr><td>Percent Travel Time Difference: </td><td>' + ((feature.properties.alt_avg_to / feature.properties.base_avg_t - 1) * 100).toFixed(1) + '%</td></tr></table>');
+            layer.bindPopup('<table><tr><td>Zone: </td><td>' + feature.properties.zone + '</td></tr><tr><td>Mandatory Travel Time Difference: </td><td>' + (feature.properties.alt_avg_tour_time - feature.properties.base_avg_tour_time).toFixed(1) + ' min</td></tr><tr><td>Percent Travel Time Difference: </td><td>' + ((feature.properties.alt_avg_tour_time / feature.properties.base_avg_tour_time - 1) * 100).toFixed(1) + '%</td></tr></table>');
           }
       });
       
-      var travelLayer = omnivore.topojson('http://sandag.github.io/transnet/no_tnet/taz_mandatory_travel_times.topo.json', null, travelLayer).addTo(map);
+      omnivore.topojson('http://sandag.github.io/transnet/no_tnet/taz_mandatory_travel_times.topo.json', null, travelLayer).addTo(map);
     </script>
   </body>
 </html>
