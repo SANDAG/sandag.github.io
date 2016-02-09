@@ -35,20 +35,42 @@
                     <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
 
-                <p>CalEnviroScreen Tracts</p>
-
-                <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+                <h3>CalEnviroScreen Tracts</h3>
+                <p>Most susceptible San Diego County Census Tracts as defined by CalEnviroScreen 2.0.</p>
+                <ul class="legend" >
+                  <li style="background-color: rgba(221,28,119,0.6);">Top Tier (Worst 10 Percent)</li>
+                  <li style="background-color: rgba(201,148,199,0.6);">Tier 2 (Worst 20 Percent)</li>
+                  <li style="background-color: rgba(231,225,239,0.6);">Tier 3 (Worst 30 Percent)</li>
+                </ul>
+                
+                <p class="lorem">Notes: CalEnviroScreen was updated in October 2014 to include additional data along the US-Mexico border.</p>
             </div>
         </div>
     </div>
 
     <div id="map" class="sidebar-map"></div>
 
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
     <script src="../media/sidebar/js/leaflet-sidebar.min.js"></script>
-    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
 
     <script>
+        L.TopoJSON = L.GeoJSON.extend({  
+            addData: function(jsonData) {    
+                if (jsonData.type === "Topology") {
+                    for (key in jsonData.objects) {
+                        geojson = topojson.feature(jsonData, jsonData.objects[key]);
+                        L.GeoJSON.prototype.addData.call(this, geojson);
+                    }
+                }    
+                else {
+                    L.GeoJSON.prototype.addData.call(this, jsonData);
+                }
+            }  
+        });
+        // Copyright (c) 2013 Ryan Clark
+        
         var map = L.map('map').setView([33.0210, -117.31], 9);
       
         L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', 
@@ -58,13 +80,33 @@
               attribution: '(c) <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors (c) <a href="http://cartodb.com/attributions">CartoDB</a>, CartoDB <a href ="http://cartodb.com/attributions">attributions</a>'
         }).addTo(map);
         
-        var jurisFunction = L.geoJson(null, {
-            style: function(feature) {
-                return {color: '#696969', fill: false, weight: .5, opacity: .35, dashArray: "10 4"};
-            }
-        });
-      
-        var jurisLayer = omnivore.topojson('http://sandag.github.io/geo/jurisdictions.topo.json', null, jurisFunction).addTo(map);
+        var tractLayer = new L.TopoJSON();
+
+        $.getJSON('http://sandag.github.io/enviroscreen/sd_enviroscreen_2_0.topo.json').done(addTractData);
+        
+        function addTractData(tractData){  
+            tractLayer.addData(tractData);
+            tractLayer.addTo(map);
+            tractLayer.eachLayer(handleTractLayer);
+        }
+        
+        function handleTractLayer(layer) {
+            layer.setStyle({
+              fillColor: getTractColor(layer.feature.properties.sd_rank),
+              fillOpacity: layer.feature.properties.sd_rank <= 189 ? 0.8 : 0,
+              opacity: layer.feature.properties.sd_rank <= 189 ? 0.4 : 0,
+              color: '#676767',
+              weight: 1
+            });
+        }
+        
+        function getTractColor (d) {
+          return d < 63 ? '#dd1c77' :
+                 d < 126 ? '#c994c7' :
+                 d <= 189 ? '#e7e1ef' :
+                 '#fff';
+        }
+
         
         var sidebar = L.control.sidebar('sidebar').addTo(map);
     </script>
