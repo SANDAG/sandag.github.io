@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width"/>
+        <meta name="mobile-web-app-capable" content="yes"/>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="description" content="" />
+        <meta name="author" content="SANDAG" />
+        
+        <title>SANDAG QuickMaps</title>
+        
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+         <!--[if lte IE 8]><link rel="stylesheet" href="https://cdn.leafletjs.com/leaflet-0.7.7/leaflet.ie.css" /><![endif]-->
+        <link rel="stylesheet" href="media/sidebar/css/map.css" />
+        <link rel="stylesheet" href="media/sidebar/css/leaflet-sidebar.min.css" />
+    </head>
+    <body>
+    <div id="sidebar" class="sidebar">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li class="active"><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+            </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane active" id="home">
+                <h1 class="sidebar-header">
+                    SANDAG Quick Map
+                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+
+                <p>A responsive sidebar for mapping libraries like <a href="http://leafletjs.com/">Leaflet</a> or <a href="http://openlayers.org/">OpenLayers</a>.</p>
+
+                <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="map" class="sidebar-map"></div>
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+    <script src="media/sidebar/js/leaflet-sidebar.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+
+    <script>
+        var map = L.map('map').setView([33.0210, -117.31], 9);
+      
+        L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', 
+        {
+              maxZoom: 22,
+              minZoom: 1,
+              attribution: '(c) <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors (c) <a href="http://cartodb.com/attributions">CartoDB</a>, CartoDB <a href ="http://cartodb.com/attributions">attributions</a>'
+        }).addTo(map);
+        
+        var jurisFunction = L.geoJson(null, {
+            style: function(feature) {
+                return {color: '#696969', fill: false, weight: .5, opacity: .35, dashArray: "10 4"};
+            }
+        });
+      
+        var jurisLayer = omnivore.topojson('http://sandag.github.io/geo/jurisdictions.topo.json', null, jurisFunction).addTo(map);
+        
+        var sidebar = L.control.sidebar('sidebar').addTo(map);
+    </script>
+</body>
+</html>
