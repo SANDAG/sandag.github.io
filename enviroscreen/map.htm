@@ -19,17 +19,17 @@
         <link rel="stylesheet" href="../media/sidebar/css/leaflet-sidebar.min.css" />
     </head>
     <body>
-    <div id="sidebar" class="sidebar">
+    <div id="sidebar" class="sidebar sidebar-left collapsed">
         <!-- Nav tabs -->
         <div class="sidebar-tabs">
             <ul role="tablist">
-                <li class="active"><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#home" role="tab"><i class="fa fa-question"></i></a></li>
             </ul>
         </div>
 
         <!-- Tab panes -->
         <div class="sidebar-content">
-            <div class="sidebar-pane active" id="home">
+            <div class="sidebar-pane" id="home">
                 <h1 class="sidebar-header">
                     SANDAG Quick Map
                     <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
@@ -71,7 +71,7 @@
         });
         // Copyright (c) 2013 Ryan Clark
         
-        var map = L.map('map').setView([33.0210, -117.31], 9);
+        var map = L.map('map').setView([33.0210, -117.01], 9);
       
         L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', 
         {
