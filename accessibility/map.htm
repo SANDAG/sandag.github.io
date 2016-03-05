@@ -101,19 +101,28 @@
         
         var tractLayer = new L.TopoJSON();
         var jurisdictionLayer = new L.TopoJSON();
+        var accessLayer = new L.TopoJSON();
         
         var map = L.map('map', {
-            center: [33.0210, -117.01],
-            zoom: 9,
-            layers: [baseLayer, tractLayer, jurisdictionLayer]
+            center: [32.7310, -117.11],
+            zoom: 13,
+            layers: [baseLayer, tractLayer, accessLayer]//jurisdictionLayer]
         });
         
-        $.getJSON('http://sandag.github.io/geo/sd_enviroscreen_2_0.topo.json').done(addTractData);
+        //$.getJSON('http://sandag.github.io/geo/sd_enviroscreen_2_0.topo.json').done(addTractData);
         $.getJSON('http://sandag.github.io/geo/jurisdictions.topo.json').done(addJurisdictionData);
+        $.getJSON('http://sandag.github.io/accessibility/transit_employment_access_scen247_epsg4326.topo.json').done(addAccessData);
         
+        /*
         function addTractData(tractData){  
             tractLayer.addData(tractData);
             tractLayer.eachLayer(handleTractLayer);
+        }*/
+        
+        function addAccessData(accessData)
+        {
+            accessLayer.addData(accessData);
+            accessLayer.eachLayer(handleAccessLayer);
         }
         
         function addJurisdictionData(jurisdictionData)
@@ -130,6 +139,28 @@
             });
         }
         
+        function handleAccessLayer(layer) {
+            layer.setStyle({
+                fillColor: getAccessColor(layer.feature.properties.emp_access),
+                fillOpacity: 0.5,
+                opacity: 0.2,
+                color: '#676767',
+                weight: 0.5
+            });
+        }
+        
+        function getAccessColor(d) {
+            return d < 2500 ? '#f7fcf5' :
+                   d < 5000  ? '#e2f3dc' :
+                   d < 10000 ? '#bfe5b8' :
+                   d < 25000 ? '#93d290' :
+                   d < 50000 ? '#5fba6c' :
+                   d < 100000 ? '#329b51' :
+                   d < 250000 ? '#0c7734' :
+                   '#00441b';
+        }
+        
+        /*
         function handleTractLayer(layer) {
             layer.setStyle({
               fillColor: getTractColor(layer.feature.properties.sd_rank),
@@ -141,12 +172,15 @@
             
         }
         
+        
+        
         function getTractColor (d) {
           return d < 63 ? '#dd1c77' :
                  d < 126 ? '#c994c7' :
                  d <= 189 ? '#e7e1ef' :
                  '#fff';
         }
+        */
     </script>
 </body>
 </html>
