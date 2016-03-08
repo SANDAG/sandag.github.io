@@ -35,7 +35,7 @@
                     <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
 
-                <h3>ABM Transit Employment Accessibility (2050 RC)</h3>
+                <h3>ABM Transit Employment Accessibility (2012)</h3>
                 <ul class="legend" >
                   <li style="background-color: rgba(247, 252, 245, 0.6);">0 - 2,500 Jobs</li>
                   <li style="background-color: rgba(226, 243, 220, 0.6);">2,500 - 5,000 Jobs</li>
@@ -108,7 +108,7 @@
         
         $.getJSON('http://sandag.github.io/enviroscreen/sd_enviroscreen_2_0.topo.json').done(addTractData);
         $.getJSON('http://sandag.github.io/geo/jurisdictions.topo.json').done(addJurisdictionData);
-        $.getJSON('http://sandag.github.io/accessibility/transit_employment_access_scen247_epsg4326.topo.json').done(addAccessData);
+        $.getJSON('http://sandag.github.io/accessibility/transit_employment_access_scen227_epsg4326.topo.json').done(addAccessData);
 
         function addAccessData(accessData)
         {
