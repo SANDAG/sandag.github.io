@@ -119,7 +119,7 @@
             return {fillColor: fillclr, color: '#999', weight: 1, fillOpacity: fillOpacity};
           },
           onEachFeature: function (feature, layer) {
-            layer.bindPopup("<table><tr><td>Census Tract:</td><td>" + (feature.properties.tract / 100.0) + "</td></tr><tr><td>VMT Per Capita:</td><td>" + (feature.properties.vmt_per_capita.toFixed(2)) + " miles per employee</td></tr><tr><td>Percent of Mean:</td><td>" + (((feature.properties.vmt_per_capita / 20.55) * 100).toFixed(1)) + "%</td></tr><tr><td>Employees:</td><td>" + (feature.properties.employees.toLocaleString()) + "</td></tr></table>");
+            layer.bindPopup("<table><tr><td>Census Tract:</td><td>" + (feature.properties.tract / 100.0) + "</td></tr><tr><td>VMT Per Capita:</td><td>" + (feature.properties.vmt_per_capita.toFixed(2)) + " miles per employee</td></tr><tr><td>Percent of Mean:</td><td>" + (((feature.properties.vmt_per_capita / 28.70) * 100).toFixed(1)) + "%</td></tr><tr><td>Employees:</td><td>" + (feature.properties.employees.toLocaleString()) + "</td></tr></table>");
           }
       });
       
