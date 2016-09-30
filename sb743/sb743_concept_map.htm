@@ -91,7 +91,7 @@
           style: function(feature) {
             var fillclr;
             var fillOpacity;
-            var vmt_per_capita = feature.properties.vmt_per_ca;
+            var vmt_per_capita = feature.properties.vmt_per_capita;
             if (vmt_per_capita < 10.28)
             {
               fillclr = "#0571b0";
@@ -116,7 +116,7 @@
             return {fillColor: fillclr, color: '#999', weight: 1, fillOpacity: fillOpacity};
           },
           onEachFeature: function (feature, layer) {
-            layer.bindPopup("<table><tr><td>Census Tract:</td><td>" + (feature.properties.home_tract / 100.0) + "</td></tr><tr><td>VMT Per Capita:</td><td>" + (feature.properties.vmt_per_ca.toFixed(2)) + " miles per resident</td></tr><tr><td>Percent of Mean:</td><td>" + (((feature.properties.vmt_per_ca / 20.25) * 100).toFixed(1)) + "%</td></tr><tr><td>Residents:</td><td>" + (feature.properties.residents.toLocaleString()) + "</td></tr></table>");
+            layer.bindPopup("<table><tr><td>Census Tract:</td><td>" + (feature.properties.tract / 100.0) + "</td></tr><tr><td>VMT Per Capita:</td><td>" + (feature.properties.vmt_per_capita.toFixed(2)) + " miles per resident</td></tr><tr><td>Percent of Mean:</td><td>" + (((feature.properties.vmt_per_capita / 20.55) * 100).toFixed(1)) + "%</td></tr><tr><td>Residents:</td><td>" + (feature.properties.residents.toLocaleString()) + "</td></tr></table>");
           }
       });
       
