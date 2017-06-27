@@ -38,7 +38,7 @@
     <div id="map"></div>
     <div id="stats">
       <h2>SB 743 Concept Map for the SANDAG Region</h2>
-      <p>2012 Run Base on SANDAG ABM Scenario 540</p>
+      <p>2012 Run Base on SANDAG ABM Scenario 720</p>
       <p>The California Office of Planning and Research (OPR) is still working to finalize 
       SB 743 CEQA Guidelines. The presentation of this information is based on an interpretation
       of the draft guidelines from 2015. SANDAG does not recommend using this information for 
@@ -52,7 +52,7 @@
         </tr>
         
         <tr>
-          <td colspan='2' >2012 Regional Mean = 28.70 VMT per San Diego resident employee</td>
+          <td colspan='2' >2012 Regional Mean = 26.70 VMT per San Diego resident employee</td>
         </tr>
         <tr>
           <td style='background: rgba(5,113,176,0.6); width: 25%;alpha:'></td>
@@ -95,19 +95,19 @@
             var fillclr;
             var fillOpacity;
             var vmt_per_capita = feature.properties.vmt_per_capita;
-            if (vmt_per_capita < 14.3)
+            if (vmt_per_capita < 13.3)
             {
               fillclr = "#0571b0";
               fillOpacity = 0.6;
-            }else if (vmt_per_capita < 24.4)
+            }else if (vmt_per_capita < 22.6)
             {
               fillclr = "#92c5de";
               fillOpacity = 0.6;
-            }else if (vmt_per_capita < 28.7)
+            }else if (vmt_per_capita < 26.7)
             {
               fillclr = "#f7f7f7";
               fillOpacity = 0.6;
-            }else if (vmt_per_capita < 35.8)
+            }else if (vmt_per_capita < 33.3)
             {
               fillclr = "#f4a582";
               fillOpacity = 0.6;
@@ -119,11 +119,11 @@
             return {fillColor: fillclr, color: '#999', weight: 1, fillOpacity: fillOpacity};
           },
           onEachFeature: function (feature, layer) {
-            layer.bindPopup("<table><tr><td>Census Tract:</td><td>" + (feature.properties.tract / 100.0) + "</td></tr><tr><td>VMT Per Capita:</td><td>" + (feature.properties.vmt_per_capita.toFixed(2)) + " miles per employee</td></tr><tr><td>Percent of Mean:</td><td>" + (((feature.properties.vmt_per_capita / 28.70) * 100).toFixed(1)) + "%</td></tr><tr><td>Employees:</td><td>" + (feature.properties.employees.toLocaleString()) + "</td></tr></table>");
+            layer.bindPopup("<table><tr><td>Census Tract:</td><td>" + (feature.properties.tract / 100.0) + "</td></tr><tr><td>VMT Per Capita:</td><td>" + (feature.properties.vmt_per_capita.toFixed(2)) + " miles per employee</td></tr><tr><td>Percent of Mean:</td><td>" + (((feature.properties.vmt_per_capita / 26.70) * 100).toFixed(1)) + "%</td></tr><tr><td>Employees:</td><td>" + (feature.properties.employees.toLocaleString()) + "</td></tr></table>");
           }
       });
       
-      var travelLayer = omnivore.topojson('http://sandag.github.io/sb743/employee_vmt_tract_scen540.topo.json', null, travelLayer).addTo(map);
+      var travelLayer = omnivore.topojson('http://sandag.github.io/sb743/employee_vmt_tract_scen720.topo.json', null, travelLayer).addTo(map);
       
       var jurisLayer = L.geoJson(null, {
           style: function(feature) {
