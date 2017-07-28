@@ -52,7 +52,7 @@
         </tr>
         
         <tr>
-          <td colspan='2' >2012 Regional Mean = 26.70 VMT per San Diego resident employee</td>
+          <td colspan='2' >2012 Regional Mean = 25.90 VMT per San Diego resident employee</td>
         </tr>
         <tr>
           <td style='background: rgba(5,113,176,0.6); width: 25%;alpha:'></td>
@@ -96,19 +96,19 @@
             var fillclr;
             var fillOpacity;
             var vmt_per_capita = feature.properties.vmt_per_capita;
-            if (vmt_per_capita < 13.3)
+            if (vmt_per_capita < 12.95)
             {
               fillclr = "#0571b0";
               fillOpacity = 0.6;
-            }else if (vmt_per_capita < 22.6)
+            }else if (vmt_per_capita < 22.015)
             {
               fillclr = "#92c5de";
               fillOpacity = 0.6;
-            }else if (vmt_per_capita < 26.7)
+            }else if (vmt_per_capita < 25.9)
             {
               fillclr = "#f7f7f7";
               fillOpacity = 0.6;
-            }else if (vmt_per_capita < 33.3)
+            }else if (vmt_per_capita < 32.375)
             {
               fillclr = "#f4a582";
               fillOpacity = 0.6;
@@ -120,7 +120,7 @@
             return {fillColor: fillclr, color: '#999', weight: 1, fillOpacity: fillOpacity};
           },
           onEachFeature: function (feature, layer) {
-            layer.bindPopup("<table><tr><td>Census Tract:</td><td>" + (feature.properties.tract / 100.0) + "</td></tr><tr><td>VMT Per Capita:</td><td>" + (feature.properties.vmt_per_capita.toFixed(2)) + " miles per employee</td></tr><tr><td>Percent of Mean:</td><td>" + (((feature.properties.vmt_per_capita / 26.70) * 100).toFixed(1)) + "%</td></tr><tr><td>Employees:</td><td>" + (feature.properties.employees.toLocaleString()) + "</td></tr></table>");
+            layer.bindPopup("<table><tr><td>Census Tract:</td><td>" + (feature.properties.tract / 100.0) + "</td></tr><tr><td>VMT Per Capita:</td><td>" + (feature.properties.vmt_per_capita.toFixed(2)) + " miles per employee</td></tr><tr><td>Percent of Mean:</td><td>" + (((feature.properties.vmt_per_capita / 25.90) * 100).toFixed(1)) + "%</td></tr><tr><td>Employees:</td><td>" + (feature.properties.employees.toLocaleString()) + "</td></tr></table>");
           }
       });
       
