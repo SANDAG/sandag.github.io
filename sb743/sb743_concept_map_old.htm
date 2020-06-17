@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+  <head>
+    <title>SANDAG Scratchpad - SB 743 Concept Map</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript" ></script>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        
+        #map {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            height: 100%;
+            width: 75%;
+            float: left;
+        }
+        
+        #stats {
+            position: relative;
+            height: 100%;
+            float: right;
+            width: 25%;
+            z-index: 0;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="stats">
+      <h2>SB 743 Concept Map for the SANDAG Region</h2>
+      <p>2012 Run Base on SANDAG ABM Scenario 720</p>
+      <p>The California Office of Planning and Research (OPR) is still working to finalize 
+      SB 743 CEQA Guidelines. The presentation of this information is based on an interpretation
+      of the draft guidelines from 2016. SANDAG does not recommend using this information for 
+      CEQA analysis at this point in time.</p>
+      <table>
+        <tr>
+          <td colspan='2'><b>Tract VMT Per Capita Relative to Regional Mean</b></td>
+        </tr>
+        
+        <tr>
+          <td colspan='2' >2012 Regional Mean = 17.6 VMT per San Diego resident</td>
+        </tr>
+        <tr>
+          <td style='background: rgba(5,113,176,0.6); width: 25%;alpha:'></td>
+          <td>Less than 50 Percent of Regional Mean</td>
+        </tr>
+        <tr>
+          <td style='background: rgba(146,197,222,0.6); width: 25%;'></td>
+          <td>50 to 85 Percent of Regional Mean</td>
+        </tr>
+        <tr>
+          <td style='background: rgba(247,247,247,0.6); width: 25%;'></td>
+          <td>85 to 100 Percent of Regional Mean</td>
+        </tr>
+        <tr>
+          <td style='background: rgba(244,165,130,0.6); width: 25%;'></td>
+          <td>100 to 125 Percent of Regional Mean</td>
+        </tr>
+        <tr>
+          <td style='background: rgba(202,0,32,0.2); width: 25%;'></td>
+          <td>More than 125 Percent of Regional Mean</td>
+        </tr>
+        
+      </table>
+      <p><b>Click on zones for more detailed information.</b></p>
+	  <p><a href='tract_vmt_per_resident_scen720.zip'>Download Data as Shapefile</a></p>
+    </div>
+    
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+    <script>
+      var map = L.map('map').setView([33.02, -116.95], 10);
+      
+      L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+              maxZoom: 18,
+              minZoom: 1,
+              attribution: '(c) <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors (c) <a href="http://cartodb.com/attributions">CartoDB</a>, CartoDB <a href ="http://cartodb.com/attributions">attributions</a>'
+          }).addTo(map);
+            
+      var travelLayer = L.geoJson(null, {
+          style: function(feature) {
+            var fillclr;
+            var fillOpacity;
+            var vmt_per_capita = feature.properties.vmt_per_capita;
+            if (vmt_per_capita < 8.8)
+            {
+              fillclr = "#0571b0";
+              fillOpacity = 0.6;
+            }else if (vmt_per_capita < 15.0)
+            {
+              fillclr = "#92c5de";
+              fillOpacity = 0.6;
+            }else if (vmt_per_capita < 17.6)
+            {
+              fillclr = "#f7f7f7";
+              fillOpacity = 0.6;
+            }else if (vmt_per_capita < 22.0)
+            {
+              fillclr = "#f4a582";
+              fillOpacity = 0.6;
+            }else 
+            {
+              fillclr = "#ca0020";
+              fillOpacity = 0.2;
+            }
+            return {fillColor: fillclr, color: '#999', weight: 1, fillOpacity: fillOpacity};
+          },
+          onEachFeature: function (feature, layer) {
+            layer.bindPopup("<table><tr><td>Census Tract:</td><td>" + (feature.properties.home_tract / 100.0) + "</td></tr><tr><td>VMT Per Capita:</td><td>" + (feature.properties.vmt_per_capita.toFixed(2)) + " miles per resident</td></tr><tr><td>Percent of Mean:</td><td>" + (((feature.properties.vmt_per_capita / 17.6) * 100).toFixed(1)) + "%</td></tr><tr><td>Residents:</td><td>" + (feature.properties.residents.toLocaleString()) + "</td></tr></table>");
+          }
+      });
+      
+      var travelLayer = omnivore.topojson('http://sandag.github.io/sb743/resident_vmt_tract_scen720.topo.json', null, travelLayer).addTo(map);
+      
+      var jurisLayer = L.geoJson(null, {
+          style: function(feature) {
+            return {color: '#000', fill: false, weight: 2};
+          }
+      });
+      
+      var jurisLayer = omnivore.topojson('http://sandag.github.io/geo/jurisdictions.topo.json', null, jurisLayer).addTo(map);
+      
+      jurisLayer.bringToFront();
+    </script>
+  </body>
+</html>
